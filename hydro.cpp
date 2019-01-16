@@ -826,6 +826,8 @@ void hydro::regimeModel( int n, RiverProfile *r )
     double gradient_1 = 0;
     double gradient_2 = 0;
 
+    std::cerr << "Looking for bracket in hydro::regimeModel" << std::endl;
+
     p = 4 * pow( Q, 0.5 );
     XS.width = p * 1.001;
     findStable( n, r );        // Update section data [n.b. Qb_cap] based on new theta
@@ -874,6 +876,7 @@ void hydro::regimeModel( int n, RiverProfile *r )
         gradient_2 = test_plus - test_minus;
         p2 = p;
     }
+    std::cerr << "Bracket is: p1 = " << p1 << " (gradient_1 = " << gradient_1 << "), p2 = " << p2 << " (gradient_2 = " << gradient_2 << ")" << std::endl;
 
     p_upper = max( p1, p2 );
     p_lower = min( p1, p2 );
