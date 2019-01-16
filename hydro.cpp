@@ -851,7 +851,7 @@ void hydro::regimeModel( int n, RiverProfile *r )
     findStable( n, r );
     test_minus = XS.Qb_cap;
 
-    gradient_1 = test_plus - test_minus;
+    gradient_2 = test_plus - test_minus;
     p2 = p;
 
 
