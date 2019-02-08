@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.1.0)
 project(Grate LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 11)
 
 # options to build CLI and GUI versions
 option(BUILD_GUI "Build Qt5 GUI version" ON)

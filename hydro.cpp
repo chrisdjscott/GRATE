@@ -14,6 +14,8 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <cmath>
+#include <unistd.h>
 #include "tinyxml2/tinyxml2.h"
 #include "tinyxml2_wrapper.h"
 using namespace std;
@@ -877,6 +879,27 @@ void hydro::regimeModel( int n, RiverProfile *r )
         p2 = p;
     }
     std::cerr << "Bracket is: p1 = " << p1 << " (gradient_1 = " << gradient_1 << "), p2 = " << p2 << " (gradient_2 = " << gradient_2 << ")" << std::endl;
+
+    if (std::isnan(gradient_1) or std::isnan(gradient_2)) {
+        std::cerr << "Got nan for gradient... debugging\n";
+
+        double testp = 4 * pow( Q, 0.5 );
+        std::cerr << "Value of n = " << n << std::endl;
+        std::cerr << "Initial value for p = " << testp << std::endl;
+        ofstream dbgfile;
+        dbgfile.open("debug-Qb_cap-against-width.csv");
+        dbgfile << "XS.width, XS.Qb_cap\n";
+        for (int idbg = 1; idbg < 1e5; idbg++) {
+            testp = idbg * 1.0;
+            XS.width = testp;
+            findStable(n, r);
+            dbgfile << testp << ", " << XS.Qb_cap << std::endl;
+        }
+        dbgfile.close();
+
+        std::cerr << "exitting early due to nan\n";
+        exit(1);
+    }
 
     p_upper = max( p1, p2 );
     p_lower = min( p1, p2 );
